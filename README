@@ -1,0 +1,3 @@
+This is a mirror of http://www.vim.org/scripts/script.php?script_id=599
+
+A CMake (www.cmake.org) indentation mode, which indents IF()/ELSE()/ENDIF(), FOREACH()/ENDFOREACH(), and MACRO()/ENDMACRO(), and it also supports multiline arguments to commands, quoted and non-quoted arguments.
