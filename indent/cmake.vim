@@ -2,7 +2,7 @@
 " Language: CMake (ft=cmake)
 " Author:	Andy Cedilnik <andy.cedilnik@kitware.com>
 " URL:		http://www.cmake.org
-" Last Change:	Sun Mar 23 15:41:55 EST 2003
+" Last Change:	Thu Jun 19 14:40:00 EDT 2003
 
 if exists("b:did_indent")
   finish
@@ -31,28 +31,46 @@ fun! CMakeGetIndent(lnum)
 
   let ind = indent(lnum)
 
+  let or = '\|'
+  " Regular expressions used by line indentation function.
+  let cmake_regex_comment = '#.*'
+  let cmake_regex_identifier = '[A-Za-z][A-Za-z0-9_]*'
+  let cmake_regex_quoted = '"\([^"\\]\|\\.\)*"'
+  let cmake_regex_arguments = '\(' . cmake_regex_quoted .
+                    \       or . '\$(' . cmake_regex_identifier . ')' .
+                    \       or . '[^()\\#"]' . or . '\\.' . '\)*'
+
+  let cmake_indent_comment_line = '^\s*' . cmake_regex_comment
+  let cmake_indent_blank_regex = '^\s*$')
+  let cmake_indent_open_regex = '^\s*' . cmake_regex_identifier .
+                    \           '\s*(' . cmake_regex_arguments .
+                    \           '\(' . cmake_regex_comment . '\)\?$'
+
+  let cmake_indent_close_regex = '^' . cmake_regex_arguments .
+                    \            ')\s*' .
+                    \            '\(' . cmake_regex_comment . '\)\?$'
+
+  let cmake_indent_begin_regex = '^\s*\(IF\|MACRO\|FOREACH\|ELSE\)\s*('
+  let cmake_indent_end_regex = '^\s*\(ENDIF\|ENDFOREACH\|ENDMACRO\|ELSE\)\s*('
+
   " Add
-  if previous_line =~? '^\s#'
+  if previous_line =~? cmake_indent_comment_line " Handle comments
     let ind = ind
   else
-    if previous_line =~? '^\s*\(IF\|ELSE\|FOREACH\|MACRO\)\s*('
+    if previous_line =~? cmake_indent_begin_regex
       let ind = ind + &sw
     endif
-    if previous_line =~? '([^)]*\(#.*\)\=$'
+    if previous_line =~? cmake_indent_open_regex
       let ind = ind + &sw
     endif
   endif
 
   " Subtract
-  if this_line =~? '^\s#'
-    let ind = ind
-  else
-    if this_line =~? '^\s*\(ENDIF\|ELSE\|ENDFOREACH\|ENDMACRO\)\s*('
-      let ind = ind - &sw
-    endif
-    if previous_line =~? '^[^(]*)\s*\(#.*\)\=$'
-      let ind = ind - &sw
-    endif
+  if this_line =~? cmake_indent_end_regex
+    let ind = ind - &sw
+  endif
+  if previous_line =~? cmake_indent_close_regex
+    let ind = ind - &sw
   endif
 
   return ind
