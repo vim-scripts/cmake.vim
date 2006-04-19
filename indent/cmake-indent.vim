@@ -1,8 +1,23 @@
+" =============================================================================
+" 
+"   Program:   CMake - Cross-Platform Makefile Generator
+"   Module:    $RCSfile: cmake-indent.vim,v $
+"   Language:  VIM
+"   Date:      $Date: 2006/04/18 14:32:28 $
+"   Version:   $Revision: 1.4 $
+" 
+" =============================================================================
+
 " Vim indent file
-" Language: CMake (ft=cmake)
-" Author:	Andy Cedilnik <andy.cedilnik@kitware.com>
-" URL:		http://www.cmake.org
-" Last Change:	Thu Jun 19 14:40:00 EDT 2003
+" Language:     CMake (ft=cmake)
+" Author:       Andy Cedilnik <andy.cedilnik@kitware.com>
+" Maintainer:   Andy Cedilnik <andy.cedilnik@kitware.com>
+" Last Change:  $Date: 2006/04/18 14:32:28 $
+" Version:      $Revision: 1.4 $
+"
+" Licence:      The CMake license applies to this file. See
+"               http://www.cmake.org/HTML/Copyright.html
+"               This implies that distribution with Vim is allowed
 
 if exists("b:did_indent")
   finish
